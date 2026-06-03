@@ -12,7 +12,6 @@ import AdminBookings from './AdminBookings';
 import AdminFleet from './AdminFleet';
 import AdminReports from './AdminReports';
 
-// Normalizer: converts backend DTO to local nested shape
 const normalizeBooking = (b: any): Booking => {
   if (b.searchQuery && b.contact && b.selectedCab) return b as Booking; // already local shape
   return {
@@ -58,12 +57,10 @@ export default function AdminDashboard() {
   const [authed, setAuthed] = useState(false);
   const [activeTab, setActiveTab] = useState<'bookings' | 'fleet' | 'reports'>('bookings');
 
-  // Unified data states loaded at container level
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [cabs, setCabs] = useState<any[]>([]);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  // Authenticate based on core auth store session
   useEffect(() => {
     if (isAdmin()) {
       setAuthed(true);
@@ -72,7 +69,6 @@ export default function AdminDashboard() {
     }
   }, []);
 
-  // Fetch all live state data on load or manual refresh
   useEffect(() => {
     if (authed) {
       /*
@@ -105,8 +101,6 @@ export default function AdminDashboard() {
     setAuthed(false);
     router.push('/login');
   };
-
-  /* ── Restricted Access Screen ── */
   if (!authed) {
     return (
       <section className="min-h-screen bg-background text-foreground flex items-center justify-center px-4 py-24">
